@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="334.572 113.036 360.537 273.9278" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <style bx:fonts="Roboto">@import url(https://fonts.googleapis.com/css2?family=Roboto%3Aital%2Cwght%400%2C100%3B0%2C300%3B0%2C400%3B0%2C500%3B0%2C700%3B0%2C900%3B1%2C100%3B1%2C300%3B1%2C400%3B1%2C500%3B1%2C700%3B1%2C900&amp;display=swap);</style>
+  </defs>
+  <path style="fill: rgb(62, 82, 62); fill-opacity: 0.15;" d="M 339.615 113.165 H 690.109 A 5 5 0 0 1 695.109 118.165 V 152.236 H 334.615 V 118.165 A 5 5 0 0 1 339.615 113.165 Z" bx:shape="rect 334.615 113.165 360.494 39.071 5 5 0 0 1@e87b917f">
+    <title>background</title>
+  </path>
+  <rect style="stroke: rgb(45, 60, 45); fill: none; transform-origin: 270.709px 206.406px;" x="90.441" y="69.443" width="360.536" height="273.927" rx="5" ry="5" transform="matrix(1, 0.000001, -0.000001, 1, 244.131415908401, 43.593620165832)"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 500; text-anchor: middle; white-space: pre;" x="138.48199462890625" y="108.79499816894531" transform="matrix(1, 0, 0, 1, 238.35874938964844, 24.952232360839844)">Component<tspan x="138.48199462890625" dy="1em">​</tspan></text>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="152.236" x2="695.109" y2="152.236"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 500; text-anchor: middle; white-space: pre;" x="138.48199462890625" y="108.79499816894531" transform="matrix(1, 0, 0, 1, 411.7437438964844, 24.952232360839844)">Purpose<tspan x="138.48199462890625" dy="1em">​</tspan></text>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="418.469" y1="113.036" x2="418.469" y2="386.963"/>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="191.436" x2="695.109" y2="191.436"/>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="230.636" x2="695.109" y2="230.636"/>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="309.036" x2="695.109" y2="309.036"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="377.449" y="174.495">Debezium</text>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="269.836" x2="695.109" y2="269.836"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="76.882" y="150.191" transform="matrix(1, 0, 0, 1, 348.1037292480469, 20.30423355102539)">Captures changes made to source and sends events <tspan x="76.88200378417969" dy="1em">​</tspan>downstream in near real-time</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="425.464" y="252.781">Manages availability and responsibilities of Kafka brokers</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="133.904" y="268.116" transform="matrix(1, 0, 0, 1, 291.55975341796875, 18.30423355102539)">Provides REST API, simplifying setting up and tearing down <tspan x="133.9040069580078" dy="1em">​</tspan>Debezium connectors</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="377.449" y="213.165">Kafka</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="376.248" y="252.781">Zookeeper</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="377.449" y="292.42">Kafka Connect</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="-19.909" y="306.339" transform="matrix(1, 0, 0, 1, 396.0037536621094, 19.30423355102539)">NodeJS<tspan x="-19.909000396728516" dy="1em">​</tspan>application</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="425.464" y="213.165">Acts as a message broker to receive and log events</text>
+  <line style="stroke: rgb(45, 60, 45); fill: none;" x1="334.572" y1="348.236" x2="695.109" y2="348.236"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; text-anchor: middle; white-space: pre;" x="376.931" y="369.982">PostgreSQL</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="133.904" y="268.116" transform="matrix(1, 0, 0, 1, 291.0817565917969, 54.476234436035156)">1) Serves static files for Willow's UI<tspan x="133.9040069580078" dy="1em">​</tspan>2) Acts as Kafka consumer to transform and process events<tspan x="133.9040069580078" dy="1em">​</tspan>3) Provides REST API to query Willow's PostgreSQL database</text>
+  <text style="fill: rgb(51, 51, 51); font-family: Roboto; font-size: 10px; font-weight: 300; white-space: pre;" x="133.904" y="268.116" transform="matrix(1, 0, 0, 1, 291.55975341796875, 96.86622619628906)">Persists and stores configuration information used to set up<tspan x="133.9040069580078" dy="1em">​</tspan>pipelines</text>
+</svg>
