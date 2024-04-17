@@ -30,7 +30,6 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
   presets: [
     [
       'classic',
@@ -45,6 +44,20 @@ const config: Config = {
         },
       } satisfies Preset.Options,
     ],
+  ],
+
+  plugins: [
+    async function myPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+          postcssOptions.plugins.push(require("autoprefixer"));
+          return postcssOptions;
+        },
+      };
+    },
   ],
 
   themeConfig: {
@@ -64,7 +77,7 @@ const config: Config = {
           position: 'right',
           label: 'Docs',
         },
-        {to: '/#team', label: 'Team', position: 'right'},
+        {to: '/#team', label: 'Team', position: 'right', activeBasePath: 'never-active'},
         {
           href: 'https://github.com/willow-cdc',
           label: 'GitHub',

@@ -229,7 +229,7 @@ Apache Kafka clusters can be handled by **Apache Zookeeper**, which manages meta
 While Kafka is a broad topic and has many moving parts, the core workflow is simple: _producers_ send messages to Kafka brokers, which can then be processed by _consumers_. Within Willow, Kafka is a message broker that stores streams of Debezium events.
 
 <figure>
-  <img src="/img/case-study/4.2-debezium_to_kafka.svg" alt="Image demonstrating the high level relationship between Debezium and Kafka. Data flows from Debezium to Kafka. Kafka stores the data in topics. Data in topics is then read by consumers."/>
+  <img src="/img/case-study/4.2-debezium_to_kafka.png" alt="Image demonstrating the high level relationship between Debezium and Kafka. Data flows from Debezium to Kafka. Kafka stores the data in topics. Data in topics is then read by consumers."/>
   <figcaption>High level relationship between Debezium and Kafka</figcaption>
 </figure>
 

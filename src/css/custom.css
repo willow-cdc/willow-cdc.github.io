@@ -5,6 +5,11 @@
  */
 
 /* You can override the default Infima variables here. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --ifm-color-primary: #409935;
   --ifm-color-primary-dark: #3a8a30;
@@ -28,3 +33,17 @@
   --ifm-color-primary-lightest: #92df88;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.portrait-img {
+  border-radius: 50%;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+/* html[data-theme='dark'] {
+  --ifm-background-color: rgb(65, 61, 61);
+  --ifm-background-surface-color: rgb(64, 61, 61);
+} */
