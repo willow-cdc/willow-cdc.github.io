@@ -1,8 +1,8 @@
-import Member from './Member';
+import Member from "./Member";
 
 const Team = () => {
   return (
-    <section className="sectionA" id="team">
+    <section className="sectionB" id="team">
       <article className="max-w-6xl mx-auto flex flex-col justify-center gap-8 py-20">
         <h2 className="lp-para text-center text-3xl tracking-wide font-semibold text-gray-600 dark:text-gray-300 mb-2">
           Meet Team Willow

@@ -39,7 +39,7 @@ function HomepageHeader() {
           pipelines
         </h1>
         <p className="text-xl leading-normal md:text-2xl mx-auto text-center max-w-6xl text-gray-100 mt-1 md:mt-2 md:leading-10">
-          Built to connect existing data stores in a few simple steps
+          Built to connect existing data stores and update caches in near real-time
         </p>
         <div className="flex flex-col-reverse md:flex-row justify-center p-6 items-center gap-2 mt-8 w-full">
           <Link

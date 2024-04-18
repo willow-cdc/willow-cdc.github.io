@@ -6,7 +6,7 @@
 
 /* You can override the default Infima variables here. */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -21,7 +21,7 @@
   --ifm-color-primary-lighter: #4ab03d;
   --ifm-color-primary-lightest: #58c14b;
   --ifm-code-font-size: 95%;
-  --ifm-font-family-base: 'Roboto';
+  --ifm-font-family-base: "Roboto";
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
@@ -61,6 +61,23 @@ img {
   --ifm-background-color: rgb(65, 61, 61);
   --ifm-background-surface-color: rgb(64, 61, 61);
 } */
+
+
+.icon-box-shadow {
+  box-shadow: 0 0 10px grey;
+}
+
+.icon-box-shadow-dark {
+  box-shadow: 100 100 300px white;
+}
+
+html[data-theme="dark"] .sectionA {
+  background-color: rgb(40, 42, 44);
+}
+
+html[data-theme="dark"] .sectionB {
+  background-color: rgb(26, 27, 27);
+}
 
 figure {
   margin: 40px 0px 40px;
