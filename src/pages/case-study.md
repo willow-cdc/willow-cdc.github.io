@@ -263,7 +263,7 @@ In order to provide a user-friendly UI for building a CDC pipeline, the NodeJS a
 
 <figure>
   <img src="/img/case-study/4.3-nodejs_v2.png" class="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
-  <figcaption>Figure 4.6: Data flows from Kafka into our Willow Adapter (the NodeJS Application) then into the sink cache</figcaption>
+  <figcaption>Figure 4.6: Data flows from Kafka into our Willow Adapter then into the sink cache</figcaption>
 </figure>
 
 ### 4.4 - PostgreSQL
