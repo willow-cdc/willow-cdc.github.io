@@ -15,7 +15,7 @@ function Component1() {
       </div>
       <div className="text-center">
         <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
-          Sync caches in real-time using change data capture
+          Sync caches in near real-time using change data capture
         </h1>
         <img
           src="/img/case-study/3.1-demo.gif"
@@ -49,8 +49,12 @@ function Component2() {
           alt="source form"
           className="max-w-[450px] md:hidden w-[90%] mx-auto border-2 border-black border-solid rounded drop-shadow-2xl"
         />
+        <p className="text-gray-600 dark:text-slate-100 text-xl tracking-wide mt-6 mb-2">
+          Without requiring in-depth technical knowledge,
+          pipelines can be created or deleted using Willow's intuitive UI
+        </p>
       </div>
-      <div className="w-[100%] lg:w-[60%] hidden md:block">
+      <div className="w-[100%] lg:w-[100%] hidden md:block">
         <img
           src="/img/case-study/3.1-2_source.png"
           alt="source form"
