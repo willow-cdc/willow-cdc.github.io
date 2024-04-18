@@ -58,7 +58,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={"Willow Framework"}
-      description="The easiest way to setup change data capture pipelines"
+      description="The easiest way to set up change data capture pipelines"
     >
       <HomepageHeader />
       <main>
