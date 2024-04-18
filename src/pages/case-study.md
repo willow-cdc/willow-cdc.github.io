@@ -17,7 +17,7 @@ This case study provides background on caching and its tradeoffs, explains chang
 
 ### 1.1 - General Problem Domain
 
-A web application's response time significantly influences user experience and company profitability. An Amazon study found that every 100ms of latency dropped sales by 1%. Google's research found that a 100ms improvement in mobile site speeds increased how many visitors made purchases by up to 10%. Web applications are growing increasingly complex and distributed, forcing developers to find ways to improve application speed and response time.
+A web application's response time significantly influences user experience and company profitability. An Amazon study found that every 100ms of latency dropped sales by 1%. Google's research found that a 100ms improvement in mobile site speeds increased how many visitors made purchases by up to 10%. Web applications are growing increasingly complex and distributed, forcing developers to find ways to improve application speed and response time. 
 
 One source of slowdown is an application's database. Database queries can become a limiting factor for an application’s response time for various reasons, including when multiple applications are simultaneously accessing the database or when unoptimized queries block other queries from being executed. A common way to increase read response times is to utilize a cache.
 
@@ -44,16 +44,16 @@ Caching is a viable strategy when there is only one application making changes t
   <figcaption>Figure 1.3: Illustration of read-through cache</figcaption>
 </figure>
 
-Cache inconsistency becomes a problem when the architecture scales and another application or component makes updates to the source database. Because the cache is unaware of these changes, it is possible for the cache to become inconsistent with the source and serve data that is no longer in sync with the source database. This out-of-sync data is referred to as **stale data**.
+Cache inconsistency becomes a problem when another application or component makes updates to the source database. Because the cache is unaware of these changes, it is possible for the cache to become inconsistent with the source and serve data that is no longer in sync with the source database. This out-of-sync data is referred to as **stale data**.
 
 <figure>
   <img src="/img/case-study/1.2-Complex-Architecture.gif" class="diagram" alt="Cache inconsistency occurs in complex architectures"/>
   <figcaption>Figure 1.4: Cache inconsistency occurs in complex architectures</figcaption>
 </figure>
 
-There are cache invalidation strategies, such as Time-To-Live (TTL) and polling, that attempt to mitigate this problem.
+There are cache invalidation strategies, such as Time-To-Live (TTL) and polling, that attempt to mitigate this problem. 
 
-TTL is a period of time that a value should exist in a cache before being discarded. This approach aims to minimize the presence of stale data. After the data expires and the application’s query to the cache results in a cache miss, the application queries the source database and places the data in the cache. This process incurs additional resource costs and increases demand on the source, especially for expired data that is not stale. This demand is exacerbated when the expiration time is made shorter, and checks on the database for updated data increase. Conversely, longer TTL periods increase the likelihood of stale data, which can be unacceptable for applications requiring timely data accuracy.
+TTL is a period of time that a value should exist in a cache before being discarded. This approach aims to minimize the presence of stale data. After the data expires and the application’s query to the cache results in a cache miss, the application queries the source database and repopulates the cache. This process incurs additional resource costs and increases demand on the source, especially for expired data that is not stale. This demand is exacerbated when the expiration time is made shorter, and checks on the database for updated data increase. Likewise, longer TTL periods increase the likelihood of stale data, which can be unacceptable for applications requiring timely data accuracy. While TTL can be fairly straightforward to implement, choosing the TTL value that reduces stale data and minimizes database queries is difficult.
 
 <figure>
   <img src="/img/case-study/1.2-TTL Too Short.gif" class="diagram" alt="Short TTL can result in unnecessary network requests"/>
@@ -72,21 +72,19 @@ An alternative cache invalidation strategy, polling is when the cache or applica
   <figcaption>Figure 1.7: Polling places additional strain on the database</figcaption>
 </figure>
 
-These cache invalidation strategies consist of seeking out and pulling changes from the database. Another set of strategies involves pushing changes from the source database to a target. These techniques are collectively referred to as change data capture.
+These cache invalidation strategies - TTL and polling - consist of seeking out and pulling changes from the database. For systems that don’t require constant data consistency and can endure brief moments of stale data, these strategies may be appropriate. However, TTL and polling are not appropriate for systems that require fresh data in near real-time. In the next section, we examine change data capture, a strategy that is not only more appropriate for these types of systems, but can put less demand on the source database.
 
 ### 1.3 - Change Data Capture
 
-Change data capture (CDC) refers to the process of identifying and capturing changes in a source - a data source - and then delivering those changes in near real-time to a sink - a downstream process or system. Near real-time (or “soft real-time”) refers to the processing of data where systems can tolerate slight delays from a few seconds to a few minutes. This is where most networked communication lies and is opposed to “hard real-time” systems, where data processing is benchmarked against 250 milliseconds (the average human response time) of delay.
+Change data capture has many use cases, including keeping caches in sync with databases.
 
-Initially, change data capture became popular as an alternative to batch based data replication for populating data warehouses. Batching consists of periodic processing (e.g., every forty minutes) of large groups of data, whereas CDC involves the continuous processing of data.
+Change data capture (CDC) refers to the process of identifying and capturing changes in a **source** - a system that provides data - and then delivering those changes in near real-time to a **sink** - a system that receives data. Near real-time (or “soft real-time”) refers to the processing of data where systems can tolerate slight delays from a few seconds to a few minutes. This is where most networked communication lies and is opposed to “hard real-time” systems, where data processing is benchmarked against 250 milliseconds (the average human response time) of delay.
 
-Nowadays, change data capture has been popularized for other use cases as well, such as keeping caches in sync with databases.
-
-CDC can be implemented through a series of different methods, each having their own benefits and tradeoffs:
+CDC can be implemented through a series of different methods, each having their own benefits and tradeoffs.
 
 #### 1.3.1 Timestamp
 
-Timestamp-based CDC involves adding metadata columns (e.g., created_at, updated_at) to each database table. This procedure is simple to implement unless changing the table schema is not applicable. One limitation is the inability to perform permanent, hard deletes of rows. Metadata of all changes, including deletes, must persist in order to detect changes. Additionally, to keep the target system in sync, the database needs to be regularly queried for changes, putting additional overhead to the source system.
+Timestamp-based CDC involves adding metadata columns (e.g., `created_at`, `updated_at`) to each database table. One limitation is the inability to perform permanent, hard deletes of rows. Metadata of all changes, including deletes, must persist in order to detect changes. Additionally, to keep the target system in sync, the database needs to be regularly queried for changes, putting additional overhead on the source system.
 
 <figure>
   <img src="/img/case-study/1.3-timestamp.png" class="diagram" alt="A database table demonstrating the timestamp-based CDC method. The updated at column is used to remember when a row was last updated."/>
@@ -95,7 +93,7 @@ Timestamp-based CDC involves adding metadata columns (e.g., created_at, updated_
 
 #### 1.3.2 Trigger
 
-Trigger-based CDC relies on the database’s built-in functionality to invoke a custom function, or trigger, whenever a change is made to a table. Changes are usually stored in a different table within the same database called a shadow table or event table. A shadow table is essentially a time ordered changelog of all operations performed in the database, providing visibility for INSERT, UPDATE, and DELETE changes.
+Trigger-based CDC relies on the database’s built-in functionality to invoke a custom function, or trigger, whenever a change is made to a table. Changes are usually stored in a different table within the same database called a shadow table or event table. A shadow table is essentially a time ordered changelog of all operations performed in the database, providing visibility for `INSERT`, `UPDATE`, and `DELETE` changes.
 
 While most database systems support triggers, this method has drawbacks. One drawback of trigger based CDC is every trigger requires an additional write operation to an event table. These additional writes impact database performance, especially at scale for write-heavy applications. Another limitation is the event table must be queried to propagate changes to any downstream processes.
 
@@ -119,7 +117,7 @@ As mentioned, CDC can be used to build a low-latency data pipeline that propagat
 
 ## 2 - Existing Solutions
 
-Developers have several options for building a log-based CDC data pipeline to replicate data from a source database to a sink cache. Multiple enterprise solutions exist, as well as various open-source projects that can be combined for a custom DIY solution. When deciding which solution to pursue, developers should consider their needs, focusing on scalability, ease of use and connector types available.
+Log-based CDC is popular among applications requiring up-to-date data in near real-time. Developers have several options for building a log-based CDC data pipeline to replicate data from a source database to a sink cache. Multiple enterprise solutions exist, as well as various open-source projects that can be combined for a custom DIY solution. When deciding which solution to pursue, developers should consider  scalability, ease of use and connector types available.
 
 ### 2.1 - Enterprise Solutions
 
@@ -134,7 +132,7 @@ Enterprise solutions are a good fit for well-funded development teams that want 
 
 ### 2.2 - DIY Solutions
 
-An alternative to enterprise solutions, DIY solutions can be built by leveraging open-source tools, like Debezium and Apache Kafka. These tools are open-source, provide a high level of data customization, and offer a wide number of community-maintained source and sink connectors. Customizations include but aren’t limited to filtering data, transforming data, aggregating data, and horizontally scaling CDC pipelines.
+An alternative to enterprise solutions, DIY solutions can be built by leveraging open-source tools, like Debezium and Apache Kafka. These tools are open-source, provide a high level of data customization, and offer a wide number of community-maintained source and sink connectors. Customizations include but aren’t limited to filtering data, transforming data, aggregating data, and horizontally scaling CDC pipelines. 
 
 <figure>
   <img src="/img/case-study/2.2-Debezium-Kafka.png" class="diagram" alt="Debezium and Kafka logos."/>
@@ -156,9 +154,19 @@ Willow’s user-friendly UI abstracts away configuration complexities we encount
 
 Willow can be deployed on users’ server of choice, allowing users to retain infrastructure control and avoiding vendor lock-in. While Willow only has a single source connector for PostgreSQL and a single sink connector for Redis, the simplicity of setting up and configuring these connectors into a CDC pipeline reduces overall deployment time and cost.
 
-Willow pipelines connect a PostgreSQL database and a Redis cache, storing database rows in the Redis cache as JSON objects - key-value pairs that follow JavaScript object syntax. Updates made to the database are passed on to the cache in near real time.
+Willow pipelines connect a PostgreSQL database and a Redis cache, storing database rows in the Redis cache as JSON objects Updates made to the database are passed on to the cache in near real-time.
 
-### 3.1 - Using Willow
+### 3.1 Demonstration
+
+The best way to understand what Willow does is by seeing it in action. In the video below, a PostgreSQL terminal logged into the `willow` database is on the left and RedisInsight - a Redis GUI for visualizing a cache's contents - is on the right. A Willow CDC pipeline connects the source PostgreSQL instance on the left to the sink Redis cache on the right.
+
+Initially, the PostgreSQL `store` table and the Redis cache are empty. Once a row is inserted into `store`, Willow replicates the row in the cache. After refreshing RedisInsight, we can see that the row inserted into our PostgreSQL table has been replicated in our Redis cache.
+
+<figure>
+  <img src="/img/case-study/3.1-demo.gif" alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."/>
+</figure>
+
+### 3.2 - Using Willow
 
 1. Initially, users are greeted with a "Welcome to Willow" page, offering an invitation to create a CDC pipeline with a click of a button.
 
@@ -205,7 +213,7 @@ When we first sought to address the cache consistency problem, we prioritized op
 
 At the heart of Willow lies Debezium, an open-source distributed platform for change data capture. Debezium monitors databases’ transaction logs and captures row-level changes for operations such as `INSERT`, `UPDATE`, and `DELETE`. It produces events for such changes, and pushes those events downstream to an event-consuming process.
 
-Previously, when we defined change data capture, we outlined three methods for implementing CDC. We highlighted that log-based CDC is arguably superior to the other two approaches, but a downside is that transaction logs varied in format across database management systems. For example, MySQL’s binlog is different from PostgreSQL’s write-ahead log, despite their similar purposes.
+Previously, when we defined change data capture, we outlined three methods for implementing CDC. We highlighted that log-based CDC is arguably superior to the other two approaches, but a downside is that transaction logs varied in format across database management systems. For example, MySQL’s *binlog* is different from PostgreSQL’s *write-ahead log*, despite their similar purposes.
 
 <figure>
   <img src="/img/case-study/4.1-log_names.png" class="diagram" alt="Table showing what term various database management systems use to refer to their transaction log."/>
@@ -220,6 +228,8 @@ Debezium, to the best of our knowledge, is the only open-source CDC tool that ca
 
 Apache Kafka is an open-source, distributed event streaming platform.
 
+While Kafka is a broad topic and has many moving parts, the core workflow is simple: *producers* send messages to Kafka brokers, which can then be processed by *consumers*. Within Willow, Kafka is a message broker that stores streams of Debezium events.
+
 At its core, Apache Kafka consists of append-only logs, where messages are stored in sequential order. Kafka calls these logs **topics**. Topics are where **events** - records of a state change - are stored.
 
 <figure>
@@ -233,33 +243,29 @@ Because Kafka can be distributed across different servers and enable data replic
 
 Apache Kafka clusters can be handled by **Apache Zookeeper**, which manages metadata on Kafka’s components. Zookeeper functions as a centralized controller.
 
-While Kafka is a broad topic and has many moving parts, the core workflow is simple: _producers_ send messages to Kafka brokers, which can then be processed by _consumers_. Within Willow, Kafka is a message broker that stores streams of Debezium events.
-
 <figure>
   <img src="/img/case-study/4.2-debezium_to_kafka.png" class="diagram" alt="Image demonstrating the high level relationship between Debezium and Kafka. Data flows from Debezium to Kafka. Kafka stores the data in topics. Data in topics is then read by consumers."/>
   <figcaption>4.4: High-level relationship between Debezium and Kafka</figcaption>
 </figure>
 
-We chose Apache Kafka for a few reasons. The first is that Debezium is natively built on top of it; there is wide support and documentation for streaming Debezium events to Kafka, and how such events can be processed by downstream consumers. The second, related reason is a tool called Kafka Connect. **Kafka Connect** is a framework that allows one to set up, update, and tear down source and sink connectors that use Kafka as a message broker.
+We chose Apache Kafka for a few reasons. The first is that Debezium is natively built on top of it; there is wide support and documentation for streaming Debezium events to Kafka, and how such events can be processed by downstream consumers. The second, related reason is a tool called Kafka Connect. Kafka Connect is a framework that allows one to set up, update, and tear down source and sink connectors that use Kafka as a message broker. 
 
-Debezium has three deployment methods. One of these methods is streaming changes to Apache Kafka, which is done through Kafka Connect. It provides an easy to use REST API for configuring and setting up connectors to Apache Kafka.
+Debezium has three deployment methods: Debezium Engine, Debezium Server, and deployment through Kafka Connect Debezium Server and Debezium Engine largely lack the ease of use provided by Kafka Connect’s REST API, and would require specifying a message broker. The third deployment method - deployment via Kafka Connect - streams changes directly to Apache Kafka. It provides an easy to use REST API for configuring and setting up connectors to Apache Kafka. Using Kafka Connect allows us to leverage Apache Kafka’s advantages, which includes persistence of records to disk in a way that is optimized for speed and efficiency.
 
 <figure>
   <img src="/img/case-study/4.2-database_connect_kafka.png" class="diagram" alt="Image demonstrating that Kafka Connect creates a Debezium connector between a database and Kafka."/>
   <figcaption>4.5: Debezium’s PostgreSQL source connector can be deployed via Kafka Connect, creating a connection between a database and Kafka</figcaption>
 </figure>
 
-We evaluated a few options for streaming Debezium events. Among these, we examined one of Debezium’s other deployment methods, Debezium Server, a configurable application that streams events directly to a variety of messaging infrastructures such as Amazon Kinesis and Pulsar. However, Debezium Server largely lacks the ease of use provided by Kafka Connect’s REST API, and would require specifying an alternative message broker. Using Kafka Connect allows us to leverage Apache Kafka’s advantages, which includes persistence of records to disk in a way that is optimized for speed and efficiency.
-
 Apache Kafka’s robust features, along with the tools that surround it - most notably, Kafka Connect - make it a logical message broker to be used with Debezium.
 
-### 4.3 - NodeJS App
+### 4.3 - Willow Adapter
 
 While Kafka enabled us to have a reliable streaming platform to publish database change events captured by Debezium, we still needed a way to consume those events and transform them into a suitable format for a cache. Initially, we researched a Redis Kafka Connect connector that consumes events from a Kafka topic and writes to a Redis cache. This connector converts events into Redis data types and generates a unique Redis key for each row. When assessing this connector, we were able to reflect `CREATE` and `UPDATE` changes to the cache, but `DELETE` changes were not reflected in the cache. Also, additional Kafka Connect metadata was inserted into the cache, which was undesirable since we only want database rows to be reflected in the cache.
 
-The Redis Kafka Connector connector was not optimal for Willow's needs, so we chose to implement our own custom Redis connector - a NodeJS app. The NodeJS app provides similar functionality to the Redis Kafka Connect connector, but it handles database level deletes appropriately by removing the associated data from the cache. The NodeJS app also only inserts database row information - no Kafka Connect metadata is inserted. To consume messages from a Kafka topic, the KafkaJS npm package was used. To process those messages and update the cache, a custom class was created that leverages the Redis npm package.
+The Redis Kafka Connector connector was not optimal for Willow's needs, so we chose to implement our own custom Redis connector - a Willow Adapter for Kafka built with NodeJS. The Willow Adapter provides similar functionality to the Redis Kafka Connect connector, but it handles database level deletes appropriately by removing the associated data from the cache. The Willow Adapter also only inserts database row information - no Kafka Connect metadata is inserted. To consume messages from a Kafka topic, the KafkaJS npm package was used. To process those messages and update the cache, a custom class was created that leverages the Redis npm package.
 
-In order to provide a user-friendly UI for building a CDC pipeline, the NodeJS app both serves the static files and acts as the REST API for Willow’s UI, simplifying setup and teardown of each pipeline.
+In order to provide a user-friendly UI for building a CDC pipeline, the Willow Adapter both provides a React application and acts as the REST API for Willow’s UI, simplifying setup and teardown of each pipeline.
 
 <figure>
   <img src="/img/case-study/4.3-nodejs_v2.png" class="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
@@ -291,9 +297,7 @@ As shown, Willow’s pipeline is built upon various open-source tools. The compo
   <figcaption>Figure 5.2: Willow's architecture</figcaption>
 </figure>
 
-To minimize potential configuration issues with installing Willow, we use Docker. Docker is a tool that packages software into containers - executable packages of code that can be run on a wide array of operating systems. We utilize Docker because each of Willow's components has its own dependencies and, if installed locally, might conflict with other existing software on the user’s machine. Furthermore, installation steps vary across operating systems. Both of these issues can lead to unnecessary time spent on configuration.
-
-Additionally, containerizing Willow also makes sense from a long-term perspective; Docker supports various orchestration tools like Kubernetes or Docker Swarm that allows users to manage and scale containers. In other words, Docker is not only portable and consistent across various environments, but it is also horizontally scalable. Its ease of use and portability make it an important piece of Willow.
+To minimize potential configuration issues with installing Willow, we use Docker. Containerizing Willow also makes sense from a long-term perspective; Docker supports various orchestration tools like Kubernetes or Docker Swarm that allows users to manage and scale containers. In other words, Docker is not only portable and consistent across various environments, but it is also horizontally scalable. Its ease of use and portability make it an important piece of Willow.
 
 The final architecture is as follows:
 
@@ -310,7 +314,7 @@ Willow's development encountered two main technical challenges: Debezium configu
 
 #### 6.1.1 - Multiple Pipelines Sharing a Replication Slot
 
-One of the challenges was centered around multiple pipelines sharing a replication slot. A replication slot is a PostgreSQL feature that keeps track of the last-read entry in the write-ahead log - PostgreSQL’s transaction log - for a specific consumer. For Willow, a consumer is equivalent to a pipeline.
+One of the challenges was centered around multiple pipelines sharing a replication slot. A replication slot is a PostgreSQL feature that keeps track of the last-read entry in the write-ahead log - PostgreSQL’s transaction log - for a specific consumer. For Willow, a consumer is equivalent to a pipeline. 
 
 In an early version, Willow reused a single replication slot for every pipeline connected to a PostgreSQL server, but only a single pipeline received changes and the remaining pipelines received none. This occurred since all pipelines for a single PostgreSQL server shared a replication slot and only one pipeline can consume from a replication slot at a time. However, pipelines connected to the same PostgreSQL server should be considered independent entities that consume all relevant changes.
 
@@ -330,13 +334,13 @@ A tradeoff to this approach is that a new replication slot is created in the Pos
 
 #### 6.1.2 - Working with Minimum Privileged User
 
-The second challenge was ensuring source connectors are successfully created when Willow is provided a database user that does not have `SUPERUSER` privileges. A PostgreSQL `SUPERUSER` bypasses all permission checks and accesses everything in the server. A minimum privileged user, on the other hand, only has sufficient permissions for Willow to create a source connector and replicate specific tables within the PostgreSQL server. These privileges are `REPLICATION`, `LOGIN`, database level `CREATE`, and table level `SELECT` privileges.
+The second challenge was ensuring source connectors are successfully created when Willow is provided a database user that does not have `SUPERUSER` privileges. A PostgreSQL `SUPERUSER` bypasses all permission checks and accesses everything in the server. A minimum privileged user, on the other hand, only has sufficient permissions for Willow to create a source connector and replicate specific tables within the PostgreSQL server. These privileges are `REPLICATION`, `LOGIN`, database level `CREATE`, and table level `SELECT` privileges. 
 
 Debezium successfully creates a source connector to a PostgreSQL server when the provided PostgreSQL user either is a `SUPERUSER` or a minimum privileged user. Willow follows the principle of least privilege - the idea of providing users and programs only the minimum level of access needed to perform their responsibilities - by allowing end users to provide a minimum privileged PostgreSQL user.
 
-Debezium uses the minimum privileged user to create a publication. A publication is a database-scoped sequential list of `INSERT`, `UPDATE`, `DELETE`, and `TRUNCATE` changes for selected tables and are how pipelines receive data for what changes occur in those tables.
+Debezium uses the minimum privileged user to create a publication. A **publication** is a database-scoped sequential list of `INSERT`, `UPDATE`, `DELETE`, and `TRUNCATE` changes for selected tables and are how pipelines receive data for what changes occur in those tables.
 
-Initially, Willow worked well when provided a `SUPERUSER` but failed when given a minimum privileged user. The core issue came down to how Debezium creates publications in the source database and how Willow was configuring Debezium with a minimum privileged user.
+Initially, Willow worked well when provided a `SUPERUSER` but failed when given a minimum privileged user. The core issue came down to how Debezium creates publications in the source database and how Willow was configuring Debezium with a minimum privileged user. 
 
 Initially, Willow used Debezium's `table.exclude.list` setting to specify which tables should not be replicated. By process of elimination, Debezium would then attempt to replicate all of the non-excluded tables in the database. However, if private tables exist in the database that the minimum privileged user does not have access to, these tables would not be visible when Willow queried the database to determine what tables exist, and those non-visible tables would not be listed in `table.exclude.list`. As a result, Debezium’s publication creation would fail since the publication contained tables inaccessible to the minimum privileged user.
 
@@ -354,9 +358,9 @@ This issue was resolved by using Debezium's `table.include.list` instead of its 
 
 ### 6.2 - Event Transformation
 
-Events generated by Debezium take the shape of a key-value pair, representing an individual table’s row change. The key contains information about the row's primary key value, and the value contains information about the type of change and the row's updated values.
+Events generated by Debezium take the shape of a key-value pair, representing an individual table’s row change. The key contains information about the row's primary key value, and the value contains information about the type of change and the row's updated values. 
 
-Willow uses a combination of the event’s key and value to determine the Redis key, which follows the format `database.table.primarykey`.
+Willow uses a combination of the event’s key and value to determine the Redis key, which follows the format `database.table.primarykey`. 
 
 <figure>
   <img src="/img/case-study/6.2-transformation_process.png" class="diagram" alt="Image demonstrating the transformation process to convert database write-ahead log entries into Redis key-value pairs."/>
@@ -367,23 +371,23 @@ When transforming events into Redis key-value pairs, Willow handles a few edge c
 
 #### 6.2.1 - Tombstone Events
 
-When a row is deleted, Debezium generates two events. The first is a `DELETE` event containing information about the deleted row. The second, called a tombstone event, has a `key` property containing the deleted row’s primary key and a `value` property with a `null` value.
+When a row is deleted, Debezium generates two events. The first is a `DELETE` event containing information about the deleted row. The second, called a tombstone event, has a `key` property containing the deleted row’s primary key and a `value` property with a `null` value. 
 
 Tombstone events are used by Apache Kafka to remove all previous records related to that row in a process called log compaction. Log compaction helps Kafka reduce the size of each topic while still retaining enough information to replicate the table's current state.
 
-Instead of disabling tombstone events, Willow ignores them since they are essentially only used for Kafka-internal purposes.
+Since tombstone events are used for Kafka’s log compaction, the Willow Adapter ignores them when transforming Debezium events to Redis key-value pairs.
 
 #### 6.2.2 - No Primary Key
 
-A table's primary key is a column that contains a unique, not `null` value and uniquely identifies a single row. For tables with no primary keys, events have `null` keys.
+A table's primary key is a column that contains a unique, not `null` value and uniquely identifies a single row. For tables with no primary keys, events have `null` keys. 
 
-In this situation, Willow is opinionated and prevents tables without primary keys from being replicated. Willow’s UI does not show tables without a primary key as an option when selecting tables to replicate. Without a primary key, it is difficult to determine which Redis key-value pair should be created, updated or deleted.
+In this situation, Willow is opinionated and prevents tables without primary keys from being replicated. Willow’s UI does not show tables without a primary key as an option when selecting tables to replicate. Without a primary key, it is difficult to determine which Redis key-value pair should be created, updated or deleted. 
 
 The tradeoff of this decision is that Willow cannot be used for tables without a primary key. While these types of tables are sometimes used for containing message logs, their usage is infrequent when following good database design, and their contents are not typically desirable to replicate in a cache.
 
 #### 6.2.3 - Composite Primary Key
 
-Instead of using a single column as the primary key, a table can use the combination of two or more columns to uniquely identify each row. This combination of columns is called a composite primary key.
+Instead of using a single column as the primary key, a table can use the combination of two or more columns to uniquely identify each row. This combination of columns is called a composite primary key. 
 
 In the visual below, the combination of the `order_id` and `payment_id` columns is the composite primary key for the Payments table.
 
@@ -392,7 +396,7 @@ In the visual below, the combination of the `order_id` and `payment_id` columns 
   <figcaption>6.6: The Payments table has a comopsite primary key comprised of the `order_id` and `payment_id` columns (boxed in green).</figcaption>
 </figure>
 
-For tables with a composite primary key, event keys contain information about all column values contributing to the row’s composite key.
+For tables with a composite primary key, event keys contain information about all column values contributing to the row’s composite key. 
 
 Willow supports usage of composite primary keys by joining the individual values with a dot when creating the key for Redis' key-value pair, such as `database.table.keyvalue1.keyvalue2`.
 
@@ -404,9 +408,9 @@ While we are happy with Willow, there is room for improvement. The following are
 
 **Decoupling Source and Sink Connectors**
 
-In our current architecture, pipelines have a one-to-one relationship with a source database and a sink cache. That is, when a user wants to create a pipeline, they must enter information for some source database and sink cache, even if that information has already been entered for another Willow pipeline. In the enterprise solutions we’ve seen, source connector information can be registered without only being used for a single pipeline; one can specify a source connector that can then be used for multiple pipelines. The same holds for sink connectors.
+In our current architecture, pipelines have a one-to-one relationship with a source database and a sink cache. That is, when a user wants to create a pipeline, they must enter information for some source database and sink cache, even if that information has already been entered for another Willow pipeline. In the enterprise solutions we’ve seen, source connector information can be registered without only being  used for a single pipeline; one can specify a source connector that can then be used for multiple pipelines. The same holds for sink connectors.
 
-Decoupling source and sink connectors would also enable Willow to stream changes to different caches without needing to establish new pipelines. Currently for each Willow pipeline, there is one source connector and one sink connector. In certain situations, users may want to stream changes from one source database to multiple Redis caches. To do so, for each additional cache, a user would need to create a new pipeline. However, this is not an ideal design, as each additional pipeline creates redundant Kafka topics, taking up additional disk space. By decoupling source and sink connectors, Willow users could simply tie multiple Redis sinks to the same source database in one pipeline. This would grant users more flexibility and be a more efficient use of resources.
+Decoupling source and sink connectors would also enable Willow to stream changes to different caches without needing to establish new pipelines. Currently for each Willow pipeline, there is one source connector and one sink connector. In certain situations, users may want to stream changes from one source database to multiple Redis caches. To do so, for each additional cache, a user would need to create a new pipeline. However, this is not an ideal design, as each additional pipeline creates redundant Kafka topics, taking up additional disk space. By decoupling source and sink connectors, Willow users could simply tie multiple Redis sinks to the same source database in one pipeline. This would grant users more flexibility and be a more efficient use of resources. 
 
 **Deployment and Management**
 
@@ -419,7 +423,25 @@ Currently, there are no observability metrics for monitoring the health and stat
 **Other ideas**
 
 Other features we would like to add include:
-
 - The ability to connect more types of sources and sinks. Currently, Willow only captures changes from PostgreSQL databases into Redis caches.
 - The option to encrypt certain steps in the pipeline. For example, while we currently set up Debezium to prefer to use an encrypted connection to the source database, if no certifications are provided, Debezium can default to an unencrypted connection.
 - Adding more Redis types. Currently, rows are stored as Redis JSON types within the cache. While we believe this offers the most flexibility, allowing users to store as other types (Redis Hashes, Strings) can be beneficial.
+
+### 8 - References
+
+1. [Amazon Found Every 100ms of Latency Cost them 1% in Sales](https://www.gigaspaces.com/blog/amazon-found-every-100ms-of-latency-cost-them-1-in-sales)
+2. [Google Study on Website Performance](https://www.thinkwithgoogle.com/intl/en-emea/marketing-strategies/app-and-mobile/mobile-page-speed-data/)
+3. [How Slow Queries Hurt Your Business](https://redis.com/blog/how-slow-queries-hurt-your-business/)
+4. [Cache Strategies](https://medium.com/@mmoshikoo/cache-strategies-996e91c80303)
+5. [Cache Invalidation](https://www.geeksforgeeks.org/cache-invalidation-and-the-methods-to-invalidate-cache/)
+6. [What is Change Data Capture](https://www.qlik.com/us/change-data-capture/cdc-change-data-capture)
+7. [How Fast is Real-Time?](https://www.pubnub.com/blog/how-fast-is-realtime-human-perception-and-technology/)
+8. [Change Data Capture Methods](https://www.confluent.io/learn/change-data-capture/)
+9. [Debezium](https://debezium.io/)
+10. [Apache Kafka](https://kafka.apache.org/)
+11. [PostgreSQL](https://www.postgresql.org/)
+12. [PostgreSQL Replication Slots](https://www.postgresql.org/docs/10/logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS)
+13. [Minimum Privileged User Permissions](https://debezium.io/documentation/reference/2.5/connectors/postgresql.html#postgresql-permissions)
+14. [Tombstone Events](https://debezium.io/documentation/reference/2.5/connectors/postgresql.html#postgresql-delete-events)
+15. [Primary Keys](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS)
+16. [Usage of Tables with No Primary Keys](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#postgresql-replica-identity)
