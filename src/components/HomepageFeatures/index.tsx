@@ -6,7 +6,7 @@ import FadeInSection from "./FadeInSection";
 function Component1() {
   return (
     <section className="bg-gray-100 sectionA">
-      <div className="max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
+      <div className="max-w-full mx-auto flex justify-between gap-5 py-8 2xl:px-48 lg:py-20 px-8">
         <div className="w-[100%] lg:w-[80%] hidden md:block">
           <img
             src="/img/case-study/3.1-demo.gif"
@@ -41,8 +41,8 @@ function Component1() {
 
 function Component2() {
   return (
-    <div className="dark:sectionB max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
-      <div className="text-center">
+    <div className="dark:sectionB max-w-full mx-auto flex justify-between py-8 gap-5 2xl:px-48 lg:py-20 px-8">
+      <div className="text-center py-0">
         <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
           Easy to setup and teardown
         </h1>
@@ -56,7 +56,7 @@ function Component2() {
           created or deleted using Willow's intuitive UI
         </p>
       </div>
-      <div className="w-[100%] lg:w-[100%] hidden md:block">
+      <div className="w-[100%] lg:w-[70%] hidden md:block">
         <img
           src="/img/case-study/3.1-2_source.png"
           alt="source form"
@@ -70,7 +70,7 @@ function Component2() {
 function Component3() {
   return (
     <section className="bg-gray-100 sectionA">
-      <div className="max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
+      <div className="max-w-full mx-auto flex justify-center gap-5 py-8 gap-5 2xl:px-48 lg:py-20 px-8">
         <div className="w-[100%] lg:w-[60%] hidden md:block">
           <img
             src="/img/home-page-diy.png"
