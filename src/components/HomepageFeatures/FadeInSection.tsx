@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 const FadeInSection = ({ children, fadeDistance = 300 }) => {
   const [isVisible, setVisible] = useState(false);
@@ -16,14 +16,16 @@ const FadeInSection = ({ children, fadeDistance = 300 }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener("scroll", checkVisibility);
     checkVisibility();
-    return () => window.removeEventListener('scroll', checkVisibility);
+    return () => window.removeEventListener("scroll", checkVisibility);
   }, [fadeDistance]);
 
   return (
     <div
-      className={`fade-in-section ${isVisible ? 'is-visible' : ''}`}
+      className={`fade-in-section ${
+        isVisible ? "is-visible" : ""
+      } border-t border-solid border-slate-300 border-l-0 border-r-0 border-b-0`}
       ref={domRef}
     >
       {children}
