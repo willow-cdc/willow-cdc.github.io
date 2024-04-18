@@ -106,7 +106,7 @@ const config: Config = {
             },
             {
               label: 'Docs',
-              to: '/docs/prerequisites',
+              to: '/docs/Prerequisites',
             },
             {
               label: 'Github',
