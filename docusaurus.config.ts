@@ -1,46 +1,46 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: 'Willow',
-  tagline: 'Willow Framework',
-  favicon: 'img/favicon.ico',
+  title: "Willow",
+  tagline: "Willow Framework",
+  favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: 'https://willow-cdc.github.io',
+  url: "https://willow-cdc.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'willow-cdc', // Usually your GitHub org/user name.
-  projectName: 'willow-cdc.github.io', // Usually your repo name.
+  organizationName: "willow-cdc", // Usually your GitHub org/user name.
+  projectName: "willow-cdc.github.io", // Usually your repo name.
   trailingSlash: false,
-  deploymentBranch: 'gh-pages',
+  deploymentBranch: "gh-pages",
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
   presets: [
     [
-      'classic',
+      "classic",
       {
         docs: {
-          sidebarPath: './sidebars.ts',
+          sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
         },
         blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: "./src/css/custom.css",
         },
       } satisfies Preset.Options,
     ],
@@ -62,60 +62,66 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/willow_transparent',
+    image: "img/willow_transparent",
     navbar: {
-      title: 'Willow',
+      title: "Willow",
       logo: {
-        alt: 'Willow Logo',
-        src: 'img/logo.png',
+        alt: "Willow Logo",
+        src: "img/logo.png",
       },
       items: [
-        {to: '/case-study', label: 'Case Study', position: 'right'},
+        { to: "/case-study", label: "Case Study", position: "right" },
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'right',
-          label: 'Docs',
+          type: "docSidebar",
+          sidebarId: "tutorialSidebar",
+          position: "right",
+          label: "Docs",
         },
-        {to: '/#team', label: 'Team', position: 'right', activeBasePath: 'never-active'},
         {
-          href: 'https://github.com/willow-cdc',
-          label: 'GitHub',
-          position: 'right',
+          to: "/#team",
+          label: "Team",
+          position: "right",
+          activeBasePath: "never-active",
+        },
+        {
+          href: "https://github.com/willow-cdc",
+          label: "GitHub",
+          position: "right",
         },
       ],
     },
     footer: {
-      style: 'light',
+      style: "light",
       logo: {
-        alt: 'Willow Logo',
-        src: 'img/logo.png',
+        alt: "Willow Logo",
+        src: "img/logo.png",
         width: 100,
+        href: "/"
       },
       links: [
         {
-          title: 'Navigation',
+          title: "Navigation",
           items: [
             {
-              label: 'Case Study',
-              to: '/case-study',
+              label: "Case Study",
+              to: "/case-study",
             },
             {
-              label: 'Team',
-              to: '/#team',
+              label: "Team",
+              to: "/#team",
             },
             {
-              label: 'Docs',
-              to: '/docs/prerequisites',
+              label: "Docs",
+              to: "/docs/prerequisites",
             },
             {
-              label: 'Github',
-              to: 'https://github.com/willow-cdc',
+              label: "Github",
+              to: "https://github.com/willow-cdc",
             },
           ],
         },
       ],
-      copyright: 'Copyright © 2024 Willow',
+      copyright: "Copyright © 2024 Willow",
     },
     prism: {
       theme: prismThemes.github,
