@@ -46,6 +46,17 @@ img {
   max-width: 100%;
 }
 
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
 /* html[data-theme='dark'] {
   --ifm-background-color: rgb(65, 61, 61);
   --ifm-background-surface-color: rgb(64, 61, 61);

@@ -1,7 +1,8 @@
-import clsx from 'clsx';
-import Heading from '@theme/Heading';
-import styles from './styles.module.css';
-import Team from './Team';
+import clsx from "clsx";
+import Heading from "@theme/Heading";
+import styles from "./styles.module.css";
+import Team from "./Team";
+import FadeInSection from "./FadeInSection";
 function Component1() {
   return (
     <div className="max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
@@ -13,7 +14,7 @@ function Component1() {
         />
       </div>
       <div className="text-center">
-        <h1 className="text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
+        <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
           Sync caches in real-time using change data capture
         </h1>
         <img
@@ -21,12 +22,13 @@ function Component1() {
           alt="redis-insight"
           className="max-w-[450px] md:hidden w-[90%] mx-auto border-2 border-black border-solid rounded drop-shadow-2xl"
         />
-        <p className="uppercase text-large tracking-wide font-semibold mt-6 mb-2">
+        <p className="text-gray-600 dark:text-slate-100 uppercase text-large tracking-wide font-semibold mt-6 mb-2">
           Technologies
         </p>
         <div className="flex gap-4 md:mt-3 justify-center">
           <img className="size-full w-14" src="/img/debezium.svg" />
           <img className="size-full w-14" src="/img/kafka.svg" />
+
           <img className="size-full w-14" src="/img/typescript.svg" />
           <img className="size-full w-14 ml-2" src="/img/docker.svg" />
         </div>
@@ -39,7 +41,7 @@ function Component2() {
   return (
     <div className="max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
       <div className="text-center">
-        <h1 className="text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
+        <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
           Easy to setup and teardown
         </h1>
         <img
@@ -70,7 +72,7 @@ function Component3() {
         />
       </div>
       <div className="text-center">
-        <h1 className="text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
+        <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
           Say goodbye to DIY solutions
         </h1>
         <img
@@ -92,10 +94,20 @@ function Component3() {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <div className="flex flex-col">
-      <Component1 />
-      <Component2 />
-      <Component3 />
-      <Team />
+      <FadeInSection fadeDistance={350}>
+        <Component1 />
+      </FadeInSection>
+      <FadeInSection fadeDistance={350}>
+        <Component2 />
+      </FadeInSection>
+
+      <FadeInSection fadeDistance={350}>
+        <Component3 />
+      </FadeInSection>
+
+      <FadeInSection fadeDistance={350}>
+        <Team />
+      </FadeInSection>
     </div>
   );
 }
