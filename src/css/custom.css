@@ -62,6 +62,7 @@ img {
   --ifm-background-surface-color: rgb(64, 61, 61);
 } */
 
+
 .icon-box-shadow {
   box-shadow: 0 0 10px grey;
 }
@@ -78,4 +79,25 @@ html[data-theme="dark"] .sectionB {
   background-color: rgb(26, 27, 27);
 }
 
+figure {
+  margin: 40px 0px 40px;
+  /* max-width: 100%; */
+}
 
+figcaption {
+  font-size: 14px;
+  color: #7c7995;
+  /* width: 500px; */
+  text-align: center;
+  line-height: 1.75rem;
+}
+
+.diagram {
+  border-radius: 10px;
+  /* border-bottom: solid #7c7995; */
+  /* box-shadow: 0px 1px 10px rgba(124, 121, 149, 0.2); */
+}
+
+.diagram.screenshot {
+  box-shadow: 0px 1px 10px rgba(124, 121, 149, 0.2);
+}

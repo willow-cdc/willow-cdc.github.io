@@ -111,8 +111,8 @@ const config: Config = {
               to: "/#team",
             },
             {
-              label: "Docs",
-              to: "/docs/prerequisites",
+              label: 'Docs',
+              to: '/docs/Prerequisites',
             },
             {
               label: "Github",
