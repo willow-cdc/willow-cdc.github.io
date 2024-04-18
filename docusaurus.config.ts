@@ -67,7 +67,7 @@ const config: Config = {
       title: 'Willow',
       logo: {
         alt: 'Willow Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {to: '/case-study', label: 'Case Study', position: 'right'},
@@ -89,8 +89,8 @@ const config: Config = {
       style: 'light',
       logo: {
         alt: 'Willow Logo',
-        src: 'img/logo.svg',
-        width: 80,
+        src: 'img/logo.png',
+        width: 100,
       },
       links: [
         {
