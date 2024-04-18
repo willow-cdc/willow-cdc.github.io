@@ -25,7 +25,7 @@ const FadeInSection = ({ children, fadeDistance = 300 }) => {
     <div
       className={`fade-in-section ${
         isVisible ? "is-visible" : ""
-      } border-t border-solid border-slate-300 border-l-0 border-r-0 border-b-0`}
+      } border-t border-solid border-slate-300 border-l-0 border-r-0 border-b-0 `}
       ref={domRef}
     >
       {children}

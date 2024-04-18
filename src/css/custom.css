@@ -69,3 +69,11 @@ img {
 .icon-box-shadow-dark {
   box-shadow: 100 100 300px white;
 }
+
+html[data-theme='dark'] .sectionA {
+  background-color: rgb(40, 42, 44);
+}
+
+html[data-theme='dark'] .sectionB {
+  background-color: rgb(26, 27, 27);
+}
