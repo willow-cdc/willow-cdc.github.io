@@ -47,7 +47,7 @@ const config: Config = {
   ],
 
   plugins: [
-    async function myPlugin(context, options) {
+    async function tailwindPlugin(context, options) {
       return {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {
@@ -86,7 +86,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       logo: {
         alt: 'Willow Logo',
         src: 'img/logo.svg',
