@@ -41,7 +41,7 @@ function Component1() {
 
 function Component2() {
   return (
-    <div className="max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
+    <div className="dark:sectionB max-w-5xl mx-auto flex justify-between gap-5 py-8 lg:py-20">
       <div className="text-center">
         <h1 className="text-gray-600 dark:text-slate-100 text-4xl md:text-[44px] font-medium tracking-tight leading-tight md:leading-[52px] mt-0">
           Easy to setup and teardown
