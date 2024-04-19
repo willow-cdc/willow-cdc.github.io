@@ -47,7 +47,7 @@ function Component2() {
           Easy to setup and teardown
         </h1>
         <img
-          src="/img/case-study/3.1-2_source.png"
+          src="/img/case-study/3.2-2_source.png"
           alt="source form"
           className="max-w-[450px] md:hidden w-[90%] mx-auto rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
         />
@@ -58,7 +58,7 @@ function Component2() {
       </div>
       <div className="w-[100%] lg:w-[70%] hidden md:block">
         <img
-          src="/img/case-study/3.1-2_source.png"
+          src="/img/case-study/3.2-2_source.png"
           alt="source form"
           className="align-top object-fill border-2 rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
         />
