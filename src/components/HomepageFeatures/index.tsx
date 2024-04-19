@@ -11,7 +11,7 @@ function Component1() {
           <img
             src="/img/case-study/3.1-demo.gif"
             alt="redis-insight"
-            className="align-top object-fill rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+            className="align-top object-fill rounded shadow-[0_0_10px_grey] dark:shadow-none"
           />
         </div>
         <div className="text-center">
@@ -21,7 +21,7 @@ function Component1() {
           <img
             src="/img/case-study/3.1-demo.gif"
             alt="redis-insight"
-            className="max-w-[450px] md:hidden w-[90%] mx-auto rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+            className="max-w-[450px] md:hidden w-[90%] mx-auto rounded shadow-[0_0_10px_grey] dark:shadow-none"
           />
           <p className="text-gray-600 dark:text-slate-100 uppercase text-large tracking-wide font-semibold mt-6 mb-2">
             Technologies
@@ -47,9 +47,9 @@ function Component2() {
           Easy to setup and teardown
         </h1>
         <img
-          src="/img/case-study/3.1-2_source.png"
+          src="/img/case-study/3.2-2_source.png"
           alt="source form"
-          className="max-w-[450px] md:hidden w-[90%] mx-auto rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+          className="max-w-[450px] md:hidden w-[90%] mx-auto rounded shadow-[0_0_10px_grey] dark:shadow-none"
         />
         <p className="text-gray-600 dark:text-slate-100 text-xl tracking-wide mt-6 mb-2">
           Without requiring in-depth technical knowledge, pipelines can be
@@ -58,9 +58,9 @@ function Component2() {
       </div>
       <div className="w-[100%] lg:w-[70%] hidden md:block">
         <img
-          src="/img/case-study/3.1-2_source.png"
+          src="/img/case-study/3.2-2_source.png"
           alt="source form"
-          className="align-top object-fill border-2 rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+          className="align-top object-fill border-2 rounded shadow-[0_0_10px_grey] dark:shadow-none"
         />
       </div>
     </div>
@@ -75,7 +75,7 @@ function Component3() {
           <img
             src="/img/home-page-diy.png"
             alt="Producer Consumer Image"
-            className="align-top object-fill rounded shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+            className="align-top object-fill rounded shadow-[0_0_10px_grey] dark:shadow-none"
           />
         </div>
         <div className="text-center">
@@ -85,7 +85,7 @@ function Component3() {
           <img
             src="/img/home-page-diy.png"
             alt="Producer Consumer"
-            className="max-w-[450px] md:hidden w-[90%] mx-auto border-2 rounded block shadow-[0_0_10px_grey] dark:shadow-[0_0_10px_white]"
+            className="max-w-[450px] md:hidden w-[90%] mx-auto border-2 rounded block shadow-[0_0_10px_grey]"
           />
           <a
             href="/case-study"
