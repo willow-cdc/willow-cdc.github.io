@@ -30,24 +30,24 @@ However, there are tradeoffs when using a cache. One major challenge is keeping 
 Caching is a viable strategy when there is only one application making changes to the source database. When the architecture is simple, caches can improve performance while avoiding cache inconsistency. This is the case with many types of caching strategies: read-through, write-through, and even cache-aside. Each of these strategies positions the cache either beside the application or between the application and the database. With read-through and cache-aside approaches, the cache is checked for the requested data before the application checks the database. If the data is not found in the cache, this is called a cache miss, and requires the application or cache to check the database for the missing data. Once the queried data is retrieved, it is then stored in the cache for future requests. A write-through cache mirrors what’s in the database, as any writes to the database are first sent to the cache, written there, and then forwarded to the database.
 
 <figure>
-  <img src="/img/case-study/1.2-Cache-Aside.png" class="diagram" alt="A cache aside strategy"/>
+  <img src="/img/case-study/1.2-Cache-Aside.png" className="diagram" alt="A cache aside strategy" width="85%"/>
   <figcaption align="center">Figure 1.1: Illustration of cache-aside cache</figcaption>
 </figure>
 
 <figure>
-  <img src="/img/case-study/1.2-Cache-Write-Through.png" class="diagram" alt="A write-through cache strategy"/>
+  <img src="/img/case-study/1.2-Cache-Write-Through.png" className="diagram" alt="A write-through cache strategy" width="85%"/>
   <figcaption>Figure 1.2: Illustration of write-through cache</figcaption>
 </figure>
 
 <figure>
-  <img src="/img/case-study/1.2-Cache-Read-Through.png" class="diagram" alt="A read-through cache strategy"/>
+  <img src="/img/case-study/1.2-Cache-Read-Through.png" className="diagram" alt="A read-through cache strategy" width="85%"/>
   <figcaption>Figure 1.3: Illustration of read-through cache</figcaption>
 </figure>
 
 Cache inconsistency becomes a problem when another application or component makes updates to the source database. Because the cache is unaware of these changes, it is possible for the cache to become inconsistent with the source and serve data that is no longer in sync with the source database. This out-of-sync data is referred to as **stale data**.
 
 <figure>
-  <img src="/img/case-study/1.2-Complex-Architecture.gif" class="diagram" alt="Cache inconsistency occurs in complex architectures"/>
+  <img src="/img/case-study/1.2-Complex-Architecture.gif" className="diagram" alt="Cache inconsistency occurs in complex architectures"/>
   <figcaption>Figure 1.4: Cache inconsistency occurs in complex architectures</figcaption>
 </figure>
 
@@ -56,19 +56,19 @@ There are cache invalidation strategies, such as Time-To-Live (TTL) and polling,
 TTL is a period of time that a value should exist in a cache before being discarded. This approach aims to minimize the presence of stale data. After the data expires and the application’s query to the cache results in a cache miss, the application queries the source database and repopulates the cache. This process incurs additional resource costs and increases demand on the source, especially for expired data that is not stale. This demand is exacerbated when the expiration time is made shorter, and checks on the database for updated data increase. Likewise, longer TTL periods increase the likelihood of stale data, which can be unacceptable for applications requiring timely data accuracy. While TTL can be fairly straightforward to implement, choosing the TTL value that reduces stale data and minimizes database queries is difficult.
 
 <figure>
-  <img src="/img/case-study/1.2-TTL Too Short.gif" class="diagram" alt="Short TTL can result in unnecessary network requests"/>
+  <img src="/img/case-study/1.2-TTL Too Short.gif" className="diagram" alt="Short TTL can result in unnecessary network requests"/>
   <figcaption>Figure 1.5: Short TTL can result in unnecessary network requests</figcaption>
 </figure>
 
 <figure>
-  <img src="/img/case-study/1.2-TTL Too Long.gif" class="diagram" alt="Long TTL can result in retrieving stale data"/>
+  <img src="/img/case-study/1.2-TTL Too Long.gif" className="diagram" alt="Long TTL can result in retrieving stale data"/>
   <figcaption>Figure 1.6: Long TTL can result in retrieving stale data</figcaption>
 </figure>
 
 An alternative cache invalidation strategy, polling is when the cache or application periodically checks if the cache’s data is inconsistent with the source database, updating any inconsistent data. Polling typically happens on fixed intervals, such as every 10 seconds, to ensure data consistency. While polling can decrease the time that data remains stale, it also puts extra demand on the source database by running frequent queries.
 
 <figure>
-  <img src="/img/case-study/1.2-polling.png" class="diagram" alt="Polling places additional strain on the database"/>
+  <img src="/img/case-study/1.2-polling.png" className="diagram" alt="Polling places additional strain on the database"  width="85%"/>
   <figcaption>Figure 1.7: Polling places additional strain on the database</figcaption>
 </figure>
 
@@ -82,34 +82,34 @@ Change data capture (CDC) refers to the process of identifying and capturing cha
 
 CDC can be implemented through a series of different methods, each having their own benefits and tradeoffs.
 
-#### 1.3.1 Timestamp
+#### Timestamp
 
 Timestamp-based CDC involves adding metadata columns (e.g., `created_at`, `updated_at`) to each database table. One limitation is the inability to perform permanent, hard deletes of rows. Metadata of all changes, including deletes, must persist in order to detect changes. Additionally, to keep the target system in sync, the database needs to be regularly queried for changes, putting additional overhead on the source system.
 
 <figure>
-  <img src="/img/case-study/1.3-timestamp.png" class="diagram" alt="A database table demonstrating the timestamp-based CDC method. The updated at column is used to remember when a row was last updated."/>
+  <img src="/img/case-study/1.3-timestamp.png" className="diagram" alt="A database table demonstrating the timestamp-based CDC method. The updated at column is used to remember when a row was last updated."  width="85%"/>
   <figcaption>Figure 1.8: Timestamp-based CDC method—the `updated_at` column is used to remember when a row was last updated</figcaption>
 </figure>
 
-#### 1.3.2 Trigger
+#### Trigger
 
 Trigger-based CDC relies on the database’s built-in functionality to invoke a custom function, or trigger, whenever a change is made to a table. Changes are usually stored in a different table within the same database called a shadow table or event table. A shadow table is essentially a time ordered changelog of all operations performed in the database, providing visibility for `INSERT`, `UPDATE`, and `DELETE` changes.
 
 While most database systems support triggers, this method has drawbacks. One drawback of trigger based CDC is every trigger requires an additional write operation to an event table. These additional writes impact database performance, especially at scale for write-heavy applications. Another limitation is the event table must be queried to propagate changes to any downstream processes.
 
 <figure>
-  <img src="/img/case-study/1.3-trigger.png" class="diagram" alt="Two database tables demonstrating the trigger-based CDC method. Individual changes that occur in an Employees table are recorded in an Event table."/>
+  <img src="/img/case-study/1.3-trigger.png" className="diagram" alt="Two database tables demonstrating the trigger-based CDC method. Individual changes that occur in an Employees table are recorded in an Event table."/>
   <figcaption>Figure 1.9: Trigger-based CDC method—individual changes in the `Employees` table are recorded in the `Event` table</figcaption>
 </figure>
 
-#### 1.3.3 Log-based
+#### Log-based
 
 Log-based CDC involves leveraging the database transaction log — a file that keeps a record of all changes made to the database — for capturing change events and delivering those to downstream processes. In log-based CDC, the database transaction log is asynchronously parsed to determine changes instead of formally querying the database. Hence, the log-based method is the least invasive out of the three methods, requiring the least additional computational overhead on the source database.
 
 Although it offers superior performance and reduced latency, the log-based method comes with its own set of tradeoffs. Database transaction log formats are not standardized, so logs between database management systems can vary and vendors can change log formats in future releases. Custom code connectors are also needed in order to read from a transaction log. Additionally, these logs usually only store changes for a particular retention period.
 
 <figure>
-  <img src="/img/case-study/1.3-log.png" class="diagram" alt="Image showing the general structure of the log-based CDC method. A CDC connector reads the database's transaction log to determine changes."/>
+  <img src="/img/case-study/1.3-log.png" className="diagram" alt="Image showing the general structure of the log-based CDC method. A CDC connector reads the database's transaction log to determine changes." width="85%"/>
   <figcaption>Figure 1.10: Log-based CDC method—A CDC connector reads the database's transaction log to determine changes</figcaption>
 </figure>
 
@@ -124,7 +124,7 @@ Log-based CDC is popular among applications requiring up-to-date data in near re
 Multiple enterprise solutions using CDC to replicate data from a source database to a sink cache are available. Prominent solutions include Redis Data Integration and Confluent. Both take care of managing the CDC pipeline and have a number of available source and sink connectors - applications capable of either extracting changes from a data source or replicating changes to a data destination. Redis Data Integration and Confluent are built on top of open-source tools (Debezium and Apache Kafka) and provide additional benefits, like a wide selection of source and sink connectors, architecture management, and built-in scalability.
 
 <figure>
-  <img src="/img/case-study/2.1-Confluent-Redis.png" class="diagram" alt="Confluent and Redis logos."/>
+  <img src="/img/case-study/2.1-Confluent-Redis.png" className="diagram" alt="Confluent and Redis logos."  width="65%"/>
   <figcaption>Figure 2.1: Two enterprise solutions utilizing CDC: Confluent and Redis Data Integration</figcaption>
 </figure>
 
@@ -135,7 +135,7 @@ Enterprise solutions are a good fit for well-funded development teams that want 
 An alternative to enterprise solutions, DIY solutions can be built by leveraging open-source tools, like Debezium and Apache Kafka. These tools are open-source, provide a high level of data customization, and offer a wide number of community-maintained source and sink connectors. Customizations include but aren’t limited to filtering data, transforming data, aggregating data, and horizontally scaling CDC pipelines. 
 
 <figure>
-  <img src="/img/case-study/2.2-Debezium-Kafka.png" class="diagram" alt="Debezium and Kafka logos."/>
+  <img src="/img/case-study/2.2-Debezium-Kafka.png" className="diagram" alt="Debezium and Kafka logos."  width="65%"/>
     <figcaption>Figure 2.2: Two DIY solutions for implementing CDC: Debezium and Apache Kafka</figcaption>
 </figure>
 
@@ -146,7 +146,7 @@ Building a DIY solution using open-source tools is a good fit for development te
 Given the tradeoffs that accompany enterprise CDC solutions and the complexity of a DIY solution, our team identified a gap in the solution space. Willow was developed as an open source, user-friendly framework designed to maintain cache consistency by creating a near real-time CDC pipeline that monitors changes in a user's PostgreSQL database and reflects row-level changes in a user's Redis cache.
 
 <figure>
-  <img src="/img/case-study/3-comparison_table.png" class="diagram" alt="Table comparing Willow against enterprise solutions and DIY solutions. Comparison criteria are no vendor lock in, easy to configure, infrastructure control, large number of connectors, and cost."/>
+  <img src="/img/case-study/3-comparison_table.png" className="diagram" alt="Table comparing Willow against enterprise solutions and DIY solutions. Comparison criteria are no vendor lock in, easy to configure, infrastructure control, large number of connectors, and cost."/>
   <figcaption>Figure 2.3: Comparing Willow with enterprise and DIY solutions</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ The best way to understand what Willow does is by seeing it in action. In the vi
 Initially, the PostgreSQL `store` table and the Redis cache are empty. Once a row is inserted into `store`, Willow replicates the row in the cache. After refreshing RedisInsight, we can see that the row inserted into our PostgreSQL table has been replicated in our Redis cache.
 
 <figure >
-  <video class="diagram screenshot" autoplay="true" loop="true" muted="true">
+  <video className="diagram screenshot" autoPlay loop muted>
     <source src="/img/case-study/3.1-demo.mp4" type="video/mp4" />
   </video>
 </figure>
@@ -173,31 +173,31 @@ Initially, the PostgreSQL `store` table and the Redis cache are empty. Once a ro
 1. Initially, users are greeted with a "Welcome to Willow" page, offering an invitation to create a CDC pipeline with a click of a button.
 
 <figure>
-  <img src="/img/case-study/3.2-1_home.png" class="diagram screenshot" alt="Willow's home page."/>
+  <img src="/img/case-study/3.2-1_home.png" className="diagram screenshot" alt="Willow's home page."/>
 </figure>
 
 2. The user is then asked to enter credentials for a PostgreSQL source.
 
 <figure>
-  <img src="/img/case-study/3.2-2_source.png" class="diagram screenshot" alt="Willow's form for connecting to a source database."/>
+  <img src="/img/case-study/3.2-2_source.png" className="diagram screenshot" alt="Willow's form for connecting to a source database."/>
 </figure>
 
 3. Once a connection to the source database is established, the user can view and select the tables and columns to be captured. The user must also provide a name for the source connector.
 
 <figure>
-  <img src="/img/case-study/3.2-3_select_data.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-3_select_data.png" className="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 4. After data selection, users must enter the Redis credentials and verify the connection to the cache.
 
 <figure>
-  <img src="/img/case-study/3.2-4_sink.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-4_sink.png" className="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 5. Once the sink connection is verified, users must provide a name for the sink connection. This completes the pipeline setup.
 
 <figure>
-  <img src="/img/case-study/3.2-5_sink_name.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-5_sink_name.png" className="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 ## Implementation
@@ -209,7 +209,7 @@ Willow leverages open-source technologies - Debezium, Apache Kafka, Apache Zooke
 When we first sought to address the cache consistency problem, we prioritized open-source CDC tools that are widely used, are well documented, and implement log-based CDC. This criteria is how we landed upon Debezium.
 
 <figure>
-  <img src="/img/case-study/4.1-database_debezium.png" class="diagram" alt="Image showing the high level relationship between a database and Debezium. Data flows from the database to Debezium."/>
+  <img src="/img/case-study/4.1-database_debezium.png" className="diagram" alt="Image showing the high level relationship between a database and Debezium. Data flows from the database to Debezium."  width="65%"/>
   <figcaption>Figure 4.1: High level relationship between database and Debezium</figcaption>
 </figure>
 
@@ -218,7 +218,7 @@ At the heart of Willow lies Debezium, an open-source distributed platform for ch
 Previously, when we defined change data capture, we outlined three methods for implementing CDC. We highlighted that log-based CDC is arguably superior to the other two approaches, but a downside is that transaction logs varied in format across database management systems. For example, MySQL’s *binlog* is different from PostgreSQL’s *write-ahead log*, despite their similar purposes.
 
 <figure>
-  <img src="/img/case-study/4.1-log_names.png" class="diagram" alt="Table showing what term various database management systems use to refer to their transaction log."/>
+  <img src="/img/case-study/4.1-log_names.png" className="diagram" alt="Table showing what term various database management systems use to refer to their transaction log." width="80%" />
   <figcaption>Figure 4.2: DBMSs and their respective transaction log names</figcaption>
 </figure>
 
@@ -235,7 +235,7 @@ While Kafka is a broad topic and has many moving parts, the core workflow is sim
 At its core, Apache Kafka consists of append-only logs, where messages are stored in sequential order. Kafka calls these logs **topics**. Topics are where **events** - records of a state change - are stored.
 
 <figure>
-  <img src="/img/case-study/4.2-kafka_log.png" class="diagram" alt="Image demonstrating that a Kafka topic is essentially a log. The topic contains four events. The first event in the log is at position 0. The next event to be placed in the topic will be appended to the end at position 4."/>
+  <img src="/img/case-study/4.2-kafka_log.png" className="diagram" alt="Image demonstrating that a Kafka topic is essentially a log. The topic contains four events. The first event in the log is at position 0. The next event to be placed in the topic will be appended to the end at position 4." width="90%"/>
   <figcaption>Figure 4.3: A Kafka topic is essentially a log of events.</figcaption>
 </figure>
 
@@ -246,7 +246,7 @@ Because Kafka can be distributed across different servers and enable data replic
 Apache Kafka clusters can be handled by **Apache Zookeeper**, which manages metadata on Kafka’s components. Zookeeper functions as a centralized controller.
 
 <figure>
-  <img src="/img/case-study/4.2-debezium_to_kafka.png" class="diagram" alt="Image demonstrating the high level relationship between Debezium and Kafka. Data flows from Debezium to Kafka. Kafka stores the data in topics. Data in topics is then read by consumers."/>
+  <img src="/img/case-study/4.2-debezium_to_kafka.png" className="diagram" alt="Image demonstrating the high level relationship between Debezium and Kafka. Data flows from Debezium to Kafka. Kafka stores the data in topics. Data in topics is then read by consumers."/>
   <figcaption>4.4: High-level relationship between Debezium and Kafka</figcaption>
 </figure>
 
@@ -255,7 +255,7 @@ We chose Apache Kafka for a few reasons. The first is that Debezium is natively 
 Debezium has three deployment methods: Debezium Engine, Debezium Server, and deployment through Kafka Connect. Debezium Server and Debezium Engine largely lack the ease of use provided by Kafka Connect’s REST API, and would require specifying a message broker. The third deployment method - deployment via Kafka Connect - streams changes directly to Apache Kafka. It provides an easy to use REST API for configuring and setting up connectors to Apache Kafka. Using Kafka Connect allows us to leverage Apache Kafka’s advantages, which includes persistence of records to disk in a way that is optimized for speed and efficiency.
 
 <figure>
-  <img src="/img/case-study/4.2-database_connect_kafka.png" class="diagram" alt="Image demonstrating that Kafka Connect creates a Debezium connector between a database and Kafka."/>
+  <img src="/img/case-study/4.2-database_connect_kafka.png" className="diagram" alt="Image demonstrating that Kafka Connect creates a Debezium connector between a database and Kafka."/>
   <figcaption>4.5: Debezium’s PostgreSQL source connector can be deployed via Kafka Connect, creating a connection between a database and Kafka</figcaption>
 </figure>
 
@@ -270,7 +270,7 @@ The Redis Kafka Connector connector was not optimal for Willow's needs, so we ch
 In order to provide a user-friendly UI for building a CDC pipeline, the Willow Adapter both provides a React application and acts as the REST API for Willow’s UI, simplifying setup and teardown of each pipeline.
 
 <figure>
-  <img src="/img/case-study/4.3-willow_adapter.png" class="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
+  <img src="/img/case-study/4.3-willow_adapter.png" className="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
   <figcaption>Figure 4.6: Data flows from Kafka into our Willow Adapter then into the sink cache</figcaption>
 </figure>
 
@@ -281,7 +281,7 @@ The final component of Willow's architecture is a PostgreSQL database. PostgreSQ
 An RDBMS works well when data follows a well-defined format and associations exist between different data entities. Willow uses PostgreSQL for its RDBMS, which is appropriate since associations exist among Willow's various entities; notably, each pipeline is associated with a source and sink. Configuration details for sources and sinks also follow a well-defined format, aligning with the type of structured data PostgreSQL excels at persisting. By storing pipeline information within a PostgreSQL database, Willow can redisplay existing pipeline information in its UI.
 
 <figure>
-  <img src="/img/case-study/4.4-postgres.png" class="diagram" alt="Image demonstrating that a PostgreSQL database persists connection data for Willow."/>
+  <img src="/img/case-study/4.4-postgres.png" className="diagram" alt="Image demonstrating that a PostgreSQL database persists connection data for Willow."/>
   <figcaption>Figure 4.7: Connection data for Willow is persisted by a PostgreSQL database</figcaption>
 </figure>
 
@@ -290,12 +290,12 @@ An RDBMS works well when data follows a well-defined format and associations exi
 As shown, Willow’s pipeline is built upon various open-source tools. The components can be summarized as follows:
 
 <figure>
-  <img src="/img/case-study/5-table.png" class="diagram" alt="Table summarizing Willow's individual architectural components."/>
+  <img src="/img/case-study/5-table.png" className="diagram" alt="Table summarizing Willow's individual architectural components."/>
   <figcaption>Figure 5.1: Summary of Willow's individual architecture components</figcaption>
 </figure>
 
 <figure>
-  <img src="/img/case-study/5-architecture.png" class="diagram" alt="Image showing Willow's architecture. All components mentioned in section 4 are included."/>
+  <img src="/img/case-study/5-architecture.png" className="diagram" alt="Image showing Willow's architecture. All components mentioned in section 4 are included."/>
   <figcaption>Figure 5.2: Willow's architecture</figcaption>
 </figure>
 
@@ -304,7 +304,7 @@ To minimize potential configuration issues with installing Willow, we use Docker
 The final architecture is as follows:
 
 <figure>
-  <img src="/img/case-study/5-architecture_with_docker.png" class="diagram" alt="Image showing Willow's architecture including Docker."/>
+  <img src="/img/case-study/5-architecture_with_docker.png" className="diagram" alt="Image showing Willow's architecture including Docker."/>
   <figcaption>Figure 5.3: Docker environment in Willow's architecture</figcaption>
 </figure>
 
@@ -321,14 +321,14 @@ One of the challenges was centered around multiple pipelines sharing a replicati
 In an early version, Willow reused a single replication slot for every pipeline connected to a PostgreSQL server, but only a single pipeline received changes and the remaining pipelines received none. This occurred since all pipelines for a single PostgreSQL server shared a replication slot and only one pipeline can consume from a replication slot at a time. However, pipelines connected to the same PostgreSQL server should be considered independent entities that consume all relevant changes.
 
 <figure>
-  <img src="/img/case-study/6.1.1-Multiple Pipelines Sharing Replication Slot A.gif" class="diagram" alt="Animation showing two pipelines sharing a replication slot. Data flows from the database's write-ahead log and into the replication slot. Data flows from the replication slot to only one of the connected pipelines. The other pipeline does not receive any data."/>
+  <img src="/img/case-study/6.1.1-Multiple Pipelines Sharing Replication Slot A.gif" className="diagram" alt="Animation showing two pipelines sharing a replication slot. Data flows from the database's write-ahead log and into the replication slot. Data flows from the replication slot to only one of the connected pipelines. The other pipeline does not receive any data."/>
   <figcaption>Figure 6.1: When two pipelines share a replication slot, only one pipeline receives updates</figcaption>
 </figure>
 
 In order to ensure multiple pipelines using the same PostgreSQL server receive every change, Willow creates a unique replication slot for each pipeline. By doing so, Willow enables each pipeline to concurrently and separately read from the write-ahead log.
 
 <figure>
-  <img src="/img/case-study/6.1.1-Multiple Pipelines Separate Replication Slots.gif" class="diagram" alt="Animation showing two pipelines with separate replication slots. Data flows from the database's write-ahead log and into the replication slots. Data flows from the replication slots to their associated pipelines."/>
+  <img src="/img/case-study/6.1.1-Multiple Pipelines Separate Replication Slots.gif" className="diagram" alt="Animation showing two pipelines with separate replication slots. Data flows from the database's write-ahead log and into the replication slots. Data flows from the replication slots to their associated pipelines."/>
   <figcaption>Figure 6.2: When pipelines have their own, separate replication slot, each receives updates</figcaption>
 </figure>
 
@@ -347,14 +347,14 @@ Initially, Willow worked well when provided a `SUPERUSER` but failed when given 
 Initially, Willow used Debezium's `table.exclude.list` setting to specify which tables should not be replicated. By process of elimination, Debezium would then attempt to replicate all of the non-excluded tables in the database. However, if private tables exist in the database that the minimum privileged user does not have access to, these tables would not be visible when Willow queried the database to determine what tables exist, and those non-visible tables would not be listed in `table.exclude.list`. As a result, Debezium’s publication creation would fail since the publication contained tables inaccessible to the minimum privileged user.
 
 <figure>
-  <img src="/img/case-study/6.1.2-Minimum Privileged User_1.gif" class="diagram" alt="Animation showing Debezium attempting to create a publication with a minimum privileged user. Since the table.exclude.list setting is used, Debezium's publication creation attempt fails."/>
+  <img src="/img/case-study/6.1.2-Minimum Privileged User_1.gif" className="diagram" alt="Animation showing Debezium attempting to create a publication with a minimum privileged user. Since the table.exclude.list setting is used, Debezium's publication creation attempt fails."/>
   <figcaption>Figure 6.3: Publication creation fails when Debezium tries to create a publication with a minimum privileged user using `table.exclude.list`</figcaption>
 </figure>
 
 This issue was resolved by using Debezium's `table.include.list` instead of its exclude counterpart. This strategy of white-listing instead of black-listing tells Debezium exactly which tables to include in the publication, preventing Debezium from including tables inaccessible to the minimum privileged user.
 
 <figure>
-  <img src="/img/case-study/6.1.2-Minimum Privileged User_2.gif" class="diagram" alt="Animation showing Debezium attempting to create a publication with a minimum privileged user. Since the table.include.list setting is used, Debezium's publication creation attempt succeeds."/>
+  <img src="/img/case-study/6.1.2-Minimum Privileged User_2.gif" className="diagram" alt="Animation showing Debezium attempting to create a publication with a minimum privileged user. Since the table.include.list setting is used, Debezium's publication creation attempt succeeds."/>
   <figcaption>Figure 6.4: Publication creation succeeds when Debezium tries to create a publication with a minimum privileged user using `table.include.list`</figcaption>
 </figure>
 
@@ -365,7 +365,7 @@ Events generated by Debezium take the shape of a key-value pair, representing an
 Willow uses a combination of the event’s key and value to determine the Redis key, which follows the format `database.table.primarykey`. 
 
 <figure>
-  <img src="/img/case-study/6.2-transformation_process.png" class="diagram" alt="Image demonstrating the transformation process to convert database write-ahead log entries into Redis key-value pairs."/>
+  <img src="/img/case-study/6.2-transformation_process.png" className="diagram" alt="Image demonstrating the transformation process to convert database write-ahead log entries into Redis key-value pairs."/>
   <figcaption>6.5: High-level proces of write-ahead log entries transforming into Redis key-value pairs</figcaption>
 </figure>
 
@@ -394,7 +394,7 @@ Instead of using a single column as the primary key, a table can use the combina
 In the visual below, the combination of the `order_id` and `payment_id` columns is the composite primary key for the Payments table.
 
 <figure>
-  <img src="/img/case-study/6.2.3-composite_pkey.png" class="diagram" alt="Database table that has a composite primary key. The two columns, order_id and payment_id, that are used in the composite primary key are boxed in green."/>
+  <img src="/img/case-study/6.2.3-composite_pkey.png" className="diagram" alt="Database table that has a composite primary key. The two columns, order_id and payment_id, that are used in the composite primary key are boxed in green." width="90%"/>
   <figcaption>6.6: The Payments table has a comopsite primary key comprised of the `order_id` and `payment_id` columns (boxed in green).</figcaption>
 </figure>
 

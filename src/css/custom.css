@@ -6,7 +6,7 @@
 
 /* You can override the default Infima variables here. */
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -21,12 +21,12 @@
   --ifm-color-primary-lighter: #4ab03d;
   --ifm-color-primary-lightest: #58c14b;
   --ifm-code-font-size: 95%;
-  --ifm-font-family-base: "Roboto";
+  --ifm-font-family-base: 'Roboto';
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --ifm-color-primary: #56cd47;
   --ifm-color-primary-dark: #45c335;
   --ifm-color-primary-darker: #41b832;
@@ -70,17 +70,18 @@ img {
   box-shadow: 100 100 300px white;
 }
 
-html[data-theme="dark"] .sectionA {
+html[data-theme='dark'] .sectionA {
   background-color: rgb(40, 42, 44);
 }
 
-html[data-theme="dark"] .sectionB {
+html[data-theme='dark'] .sectionB {
   background-color: rgb(26, 27, 27);
 }
 
 figure {
   margin: 40px 0px 40px;
   /* max-width: 100%; */
+  text-align: center;
 }
 
 figcaption {
@@ -105,10 +106,53 @@ video {
   width: 100%;
 }
 
-a[class*="footerLogoLink"] {
+a[class*='footerLogoLink'] {
   opacity: 1;
 }
 
-a[class*="footerLogoLink"]:hover {
-  opacity: 0.80;
+a[class*='footerLogoLink']:hover {
+  opacity: 0.8;
+}
+
+@media (min-width: 997px) {
+  .col--2 {
+    --ifm-col-width: calc(3 / 12 * 100%);
+  }
+
+  .col--8 {
+    --ifm-col-width: calc(6.5 / 12 * 100%);
+    margin-right: 100px;
+    margin-left: 100px;
+    font-size: 18px;
+  }
+}
+
+.table-of-contents {
+  font-size: 15px;
+  /* line-height: 1.25rem; */
+}
+
+div.col--8 article h1 {
+  letter-spacing: -1px;
+  margin-top: 16px;
+  font-size: 44px;
+  margin-bottom: 24px;
+}
+
+div.col--8 article h2 {
+  letter-spacing: -1px;
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+div.col--8 article h3 {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+  line-height: 2.2rem;
+}
+
+div.col--8 article h4 {
+  font-size: 20px;
+  margin-bottom: 22px;
 }
