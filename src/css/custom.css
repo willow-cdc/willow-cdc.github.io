@@ -101,3 +101,11 @@ figcaption {
 .diagram.screenshot {
   box-shadow: 0px 1px 10px rgba(124, 121, 149, 0.2);
 }
+
+video {
+  width: 100%;
+}
+
+a[class*='footerLogoLink'] {
+  opacity: 1;
+}
