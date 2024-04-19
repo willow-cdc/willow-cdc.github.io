@@ -173,31 +173,31 @@ Initially, the PostgreSQL `store` table and the Redis cache are empty. Once a ro
 1. Initially, users are greeted with a "Welcome to Willow" page, offering an invitation to create a CDC pipeline with a click of a button.
 
 <figure>
-  <img src="/img/case-study/3.1-1_home.png" class="diagram screenshot" alt="Willow's home page."/>
+  <img src="/img/case-study/3.2-1_home.png" class="diagram screenshot" alt="Willow's home page."/>
 </figure>
 
 2. The user is then asked to enter credentials for a PostgreSQL source.
 
 <figure>
-  <img src="/img/case-study/3.1-2_source.png" class="diagram screenshot" alt="Willow's form for connecting to a source database."/>
+  <img src="/img/case-study/3.2-2_source.png" class="diagram screenshot" alt="Willow's form for connecting to a source database."/>
 </figure>
 
 3. Once a connection to the source database is established, the user can view and select the tables and columns to be captured. The user must also provide a name for the source connector.
 
 <figure>
-  <img src="/img/case-study/3.1-3_select_data.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-3_select_data.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 4. After data selection, users must enter the Redis credentials and verify the connection to the cache.
 
 <figure>
-  <img src="/img/case-study/3.1-4_sink.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-4_sink.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 5. Once the sink connection is verified, users must provide a name for the sink connection. This completes the pipeline setup.
 
 <figure>
-  <img src="/img/case-study/3.1-5_sink_name.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
+  <img src="/img/case-study/3.2-5_sink_name.png" class="diagram screenshot" alt="Willow's form for selecting which data should be replicated from the source database."/>
 </figure>
 
 ## 4 - Implementation
@@ -270,7 +270,7 @@ The Redis Kafka Connector connector was not optimal for Willow's needs, so we ch
 In order to provide a user-friendly UI for building a CDC pipeline, the Willow Adapter both provides a React application and acts as the REST API for Willow’s UI, simplifying setup and teardown of each pipeline.
 
 <figure>
-  <img src="/img/case-study/4.3-nodejs_v2.png" class="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
+  <img src="/img/case-study/4.3-willow_adapter.png" class="diagram" alt="Image demonstrating that data flows from Kafka into the NodeJS app then into the sink cache."/>
   <figcaption>Figure 4.6: Data flows from Kafka into our Willow Adapter then into the sink cache</figcaption>
 </figure>
 
