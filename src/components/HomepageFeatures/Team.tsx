@@ -18,13 +18,13 @@ const Team = () => {
             email="alexbair143@gmail.com"
           />
           <Member
-            name="Alex Bair"
-            image="/img/team/Alex-Bair.png"
-            location="Chapel Hill, NC"
-            personalWebsite="https://www.alex-bair.com"
-            github="https://github.com/Alex-Bair"
-            linkedin="https://www.linkedin.com/in/alex-bair-a8a368a8/"
-            email="alexbair143@gmail.com"
+            name="Arno Cai"
+            image="/img/team/arno-cai.png"
+            location="Boston, MA"
+            personalWebsite="#"
+            github="https://github.com/acai777"
+            linkedin="https://www.linkedin.com/in/arno-cai/"
+            email="acai367@gmail.com"
           />
           <Member
             name="Alex Bair"
