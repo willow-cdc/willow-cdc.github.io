@@ -62,7 +62,6 @@ img {
   --ifm-background-surface-color: rgb(64, 61, 61);
 } */
 
-
 .icon-box-shadow {
   box-shadow: 0 0 10px grey;
 }
@@ -106,6 +105,10 @@ video {
   width: 100%;
 }
 
-a[class*='footerLogoLink'] {
+a[class*="footerLogoLink"] {
   opacity: 1;
+}
+
+a[class*="footerLogoLink"]:hover {
+  opacity: 0.80;
 }
