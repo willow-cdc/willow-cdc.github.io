@@ -8,7 +8,7 @@ function Component1() {
     <div className="max-w-full mx-auto flex justify-between gap-5 py-8 2xl:px-48 lg:py-20 px-8 bg-gray-100 sectionA place-items-center">
       <div className="w-[100%] lg:w-[80%] hidden md:block">
         <figure>
-          <video className="diagram screenshot" autoPlay loop muted>
+          <video className="diagram screenshot" autoPlay loop muted controls webkit-playsinline>
             <source src="/img/case-study/3.1-demo.mp4" type="video/mp4" />
           </video>
         </figure>
@@ -23,6 +23,8 @@ function Component1() {
             autoPlay
             loop
             muted
+            controls
+            webkit-playsinline
           >
             <source src="/img/case-study/3.1-demo.mp4" type="video/mp4" />
           </video>
