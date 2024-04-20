@@ -163,9 +163,7 @@ The best way to understand what Willow does is by seeing it in action. In the vi
 Initially, the PostgreSQL `store` table and the Redis cache are empty. Once a row is inserted into `store`, Willow replicates the row in the cache. After refreshing RedisInsight, we can see that the row inserted into our PostgreSQL table has been replicated in our Redis cache.
 
 <figure >
-  <video className="diagram screenshot" autoPlay loop muted controls webkit-playsinline>
-    <source src="/img/case-study/3.1-demo.mp4" type="video/mp4" />
-  </video>
+  <img src="/img/case-study/3.1-demo.gif" className="diagram screenshot" alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."/>
 </figure>
 
 ### Using Willow
