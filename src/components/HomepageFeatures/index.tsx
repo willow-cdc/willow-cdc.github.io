@@ -8,7 +8,11 @@ function Component1() {
     <div className="max-w-full mx-auto flex justify-between gap-5 py-8 2xl:px-48 lg:py-20 px-8 bg-gray-100 sectionA place-items-center">
       <div className="w-[100%] lg:w-[80%] hidden md:block">
         <figure>
-          <img src="/img/case-study/3.1-demo.gif" className="diagram screenshot" alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."/>
+          <img
+            src="/img/case-study/3.1-demo.gif"
+            className="diagram screenshot"
+            alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."
+          />
         </figure>
       </div>
       <div className="text-center">
@@ -16,7 +20,11 @@ function Component1() {
           Sync caches in near real-time using change data capture
         </h1>
         <figure>
-          <img src="/img/case-study/3.1-demo.gif" className="diagram screenshot" alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."/>
+          <img
+            src="/img/case-study/3.1-demo.gif"
+            className="diagram screenshot max-w-[450px] md:hidden w-[90%]"
+            alt="A demonstration of Willow. On the left side of the screen is a PostgreSQL terminal. On the right side of the screen is a Redis cache shown in RedisInsight. An INSERT command is performed in the PostgreSQL terminal, and the inserted data automatically appears in the Redis cache."
+          />
         </figure>
         <p className="text-gray-600 dark:text-slate-100 uppercase text-large tracking-wide font-semibold mt-6 mb-2">
           Technologies
