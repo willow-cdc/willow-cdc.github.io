@@ -32,7 +32,7 @@ const Team = () => {
             location="Lexington, KY"
             personalWebsite="https://www.cameronbibb.com"
             github="https://github.com/cameronbibb"
-            linkedin="www.linkedin.com/in/cameron-bibb-123656106"
+            linkedin="https://www.linkedin.com/in/cameron-bibb-123656106"
             email="cameron.bibb@gmail.com"
           />
           <Member
