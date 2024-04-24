@@ -36,13 +36,13 @@ const Team = () => {
             email="cameron.bibb@gmail.com"
           />
           <Member
-            name="Alex Bair"
-            image="/img/team/Alex-Bair.png"
-            location="Chapel Hill, NC"
-            personalWebsite="https://www.alex-bair.com"
-            github="https://github.com/Alex-Bair"
-            linkedin="https://www.linkedin.com/in/alex-bair-a8a368a8/"
-            email="alexbair143@gmail.com"
+            name="Alessio Novi"
+            image="/img/team/alessioNovi.png"
+            location="Genova, IT"
+            personalWebsite="https://www.alessioNovi.github.io"
+            github="https://github.com/AlessioNovi"
+            linkedin="https://www.linkedin.com/in/alessio-novi-00a89627/"
+            email="alessionovi147@gmail.com"
           />
         </div>
       </article>
