@@ -21,7 +21,7 @@ const Team = () => {
             name="Arno Cai"
             image="/img/team/arno-cai.png"
             location="Boston, MA"
-            personalWebsite="#"
+            personalWebsite="https://www.arnocai.com/"
             github="https://github.com/acai777"
             linkedin="https://www.linkedin.com/in/arno-cai/"
             email="acai367@gmail.com"
