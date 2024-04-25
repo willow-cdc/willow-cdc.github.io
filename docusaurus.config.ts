@@ -62,7 +62,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/willow_transparent",
+    image: "img/willow_transparent.png",
     navbar: {
       title: "Willow",
       logo: {
