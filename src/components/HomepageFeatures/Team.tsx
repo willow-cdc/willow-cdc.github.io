@@ -39,7 +39,7 @@ const Team = () => {
             name="Alessio Novi"
             image="/img/team/alessioNovi.png"
             location="Genova, IT"
-            personalWebsite="https://www.alessionovi.github.io/"
+            personalWebsite="https://alessionovi.github.io/"
             github="https://github.com/AlessioNovi"
             linkedin="https://www.linkedin.com/in/alessio-novi-00a89627/"
             email="alessionovi147@gmail.com"
