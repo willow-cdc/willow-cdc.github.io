@@ -67,7 +67,7 @@ CREATE ROLE willow_replication;
 /* Repeat the following command for all databases containing tables you wish to replicate */
 
 /* Provide willow_replication with database level CREATE privileges */
-GRANT CREATE ON <database_name> TO willow_replication;
+GRANT CREATE ON DATABASE <database_name> TO willow_replication;
 
 
 /* Repeat the remaining commands for all tables you wish to replicate. */
@@ -77,7 +77,7 @@ GRANT willow_replication TO <original_table_owner>;
 GRANT willow_replication TO willow;
 
 /* Make the willow_replication group the table owner and grant SELECT permissions */
-GRANT ALTER TABLE <table_name> OWNER TO willow_replication;
+ALTER TABLE <table_name> OWNER TO willow_replication;
 GRANT SELECT ON <table_name> TO willow_replication;
 ```
 
